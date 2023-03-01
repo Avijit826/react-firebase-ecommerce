@@ -1,5 +1,6 @@
-import { initializeApp } from "firebase/app"
-import { getFirestore } from "firebase/firestore"
+import firebase from "firebase/compat/app"
+import "firebase/compat/auth"
+import "firebase/compat/firestore"
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -11,6 +12,7 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 }
 
-const app = initializeApp(firebaseConfig)
-const firestore = getFirestore(app)
-export { firestore }
+firebase.initializeApp(firebaseConfig)
+const auth = firebase.auth()
+const fs = firebase.firestore()
+export { auth, fs }
