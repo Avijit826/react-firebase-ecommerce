@@ -10,8 +10,6 @@ const Signup = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-  const [errorMsg, setErrorMsg] = useState("")
-
   const handleSignUp = (e) => {
     e.preventDefault()
     auth
@@ -115,12 +113,6 @@ const Signup = () => {
           </div>
         </div>
       </div>
-      {errorMsg && (
-        <>
-          <br></br>
-          <div className="error-msg">{errorMsg}</div>
-        </>
-      )}
     </form>
   )
 }
