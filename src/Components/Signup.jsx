@@ -27,10 +27,12 @@ const Signup = () => {
             setName("")
             setEmail("")
             setPassword("")
-            setErrorMsg("")
+            // setErrorMsg("")
             navigate("/")
           })
-          .catch((error) => setErrorMsg(error.message))
+          .catch((error) => {
+            console.log(error)
+          })
       })
       .catch((error) => {
         const errorCode = error.code

@@ -36,15 +36,15 @@ function App() {
           ) : (
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Signup />} />
+              <Route path="/signup" element={<Signup />} />
               <Route
                 path="/"
                 element={
                   authenticated ? (
-                    <>rgrgm{a}</>
+                    <>authenticated</>
                   ) : (
                     // <Navigate replace to="/login" />
-                    <>fvfv</> // *** BO IT ON LOGIN PAGE IF LOGED IN REDIRECT TO HOME PAGE
+                    <>NOT - authenticated</> // *** BO IT ON LOGIN PAGE IF LOGED IN REDIRECT TO HOME PAGE
                   )
                 }
               />
