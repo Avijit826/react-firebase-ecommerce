@@ -8,6 +8,8 @@ import React, { useEffect, useState } from "react"
 import { auth } from "./Config/Config"
 import Login from "./Components/Login"
 import Signup from "./Components/Signup"
+import Home from "./Components/Home"
+import Header from "./Components/Header"
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false)
@@ -29,6 +31,7 @@ function App() {
   }, [])
   return (
     <Router>
+      <Header/>
       <div className="App">
         <>
           {a ? (
@@ -37,8 +40,9 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/" element={<Home/>} />
               <Route
-                path="/"
+                path="/user"
                 element={
                   authenticated ? (
                     <>authenticated</>
