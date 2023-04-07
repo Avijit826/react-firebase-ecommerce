@@ -178,7 +178,7 @@ function classNames(...classes) {
 
 export default function Header() {
     const [open, setOpen] = useState(false)
-    const [cartopen, setCartOpen] = useState(true)
+    const [cartopen, setCartOpen] = useState(false)
 
     return (
         <div className="bg-white">
