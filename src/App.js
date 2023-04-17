@@ -10,6 +10,8 @@ import Login from "./Components/Login"
 import Signup from "./Components/Signup"
 import Home from "./Components/Home"
 import Header from "./Components/Header"
+import { Provider } from "react-redux"
+import store from "./redux/store"
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false)
@@ -31,31 +33,33 @@ function App() {
   }, [])
   return (
     <Router>
-      <Header/>
-      <div className="App">
-        <>
-          {a ? (
-            <>Loading...</>
-          ) : (
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/" element={<Home/>} />
-              <Route
-                path="/user"
-                element={
-                  authenticated ? (
-                    <>authenticated</>
-                  ) : (
-                    // <Navigate replace to="/login" />
-                    <>NOT - authenticated</> // *** BO IT ON LOGIN PAGE IF LOGED IN REDIRECT TO HOME PAGE
-                  )
-                }
-              />
-            </Routes>
-          )}
-        </>
-      </div>
+      <Provider store={store}>
+        <Header />
+        <div className="App">
+          <>
+            {a ? (
+              <>Loading...</>
+            ) : (
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/" element={<Home />} />
+                <Route
+                  path="/user"
+                  element={
+                    authenticated ? (
+                      <>authenticated</>
+                    ) : (
+                      // <Navigate replace to="/login" />
+                      <>NOT - authenticated</> // *** BO IT ON LOGIN PAGE IF LOGED IN REDIRECT TO HOME PAGE
+                    )
+                  }
+                />
+              </Routes>
+            )}
+          </>
+        </div>
+      </Provider>
     </Router>
   )
 }
