@@ -1,5 +1,5 @@
-import { Fragment, useState } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react"
+import { Disclosure, Menu, Popover, Transition } from "@headlessui/react"
 import {
   Bars3Icon,
   MagnifyingGlassIcon,
@@ -7,12 +7,161 @@ import {
   TagIcon,
   ChatBubbleLeftEllipsisIcon,
   ShoppingBagIcon,
+  PlusSmallIcon,
+  MinusSmallIcon,
   HeartIcon,
-  XMarkIcon
-} from "@heroicons/react/24/outline";
+  XMarkIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline"
+import { useSelector } from "react-redux"
+import CartPopover from "./CartPopover"
+
+const products = [
+  {
+    id: 1,
+    name: "Throwback Hip Bag",
+    href: "#",
+    color: "Salmon",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+    imageAlt:
+      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+  },
+  {
+    id: 2,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 1,
+    name: "Throwback Hip Bag",
+    href: "#",
+    color: "Salmon",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+    imageAlt:
+      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+  },
+  {
+    id: 2,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 1,
+    name: "Throwback Hip Bag",
+    href: "#",
+    color: "Salmon",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+    imageAlt:
+      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+  },
+  {
+    id: 2,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 1,
+    name: "Throwback Hip Bag",
+    href: "#",
+    color: "Salmon",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+    imageAlt:
+      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+  },
+  {
+    id: 2,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 1,
+    name: "Throwback Hip Bag",
+    href: "#",
+    color: "Salmon",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+    imageAlt:
+      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+  },
+  {
+    id: 2,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 1,
+    name: "Throwback Hip Bag",
+    href: "#",
+    color: "Salmon",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+    imageAlt:
+      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+  },
+  {
+    id: 2,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+  {
+    id: 1,
+    name: "Throwback Hip Bag",
+    href: "#",
+    color: "Salmon",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+    imageAlt:
+      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+  },
+  {
+    id: 2,
+    name: "Medium Stuff Satchel",
+    href: "#",
+    color: "Blue",
+    imageSrc:
+      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+    imageAlt:
+      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+  },
+]
 
 const Header = () => {
-  const [cartMenu, setCartMenu] = useState(false);
+  const [cartMenu, setCartMenu] = useState(false)
+  const cartQuantity = useSelector((state) => state.cart.totalQuantity)
   return (
     <Disclosure as="nav" className="bg-white ">
       {({ open }) => (
@@ -70,7 +219,7 @@ const Header = () => {
               <button
                 type="button"
                 className="hidden lg:flex mr-4 relative text-gray-600 hover:text-gray-900"
-                onClick={()=>{}}
+                onClick={() => {}}
               >
                 <HeartIcon className="h-6 w-6" />
                 <span class="absolute right-0 top-0 -mr-2.5 -mt-2.5 text-xs bg-indigo-600 text-white font-medium px-1.5 shadow-lg rounded-full border-2 border-white">
@@ -78,16 +227,7 @@ const Header = () => {
                 </span>
               </button>
               {/* cart button */}
-              <button
-                type="button"
-                className="flex mr-4 relative text-gray-600 hover:text-gray-900"
-                onClick={() =>{}}
-              >
-                <ShoppingBagIcon className="h-6 w-6 " />
-                <span class="absolute right-0 top-0 -mr-2.5 -mt-2.5 text-xs bg-indigo-600 text-white font-medium px-1.5 shadow-lg rounded-full border-2 border-white">
-                  3
-                </span>
-              </button>
+              <CartPopover />
               {/* profile button */}
               <Menu as="div" className="relative">
                 <Menu.Button
@@ -100,7 +240,7 @@ const Header = () => {
                     alt="user-photo"
                   />
                 </Menu.Button>
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg">
                   <Menu.Item className="block lg:hidden">
                     <a
                       href="#"
@@ -172,7 +312,7 @@ const Header = () => {
         </>
       )}
     </Disclosure>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
